@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainf*ck!</title>
+    <script src="../../jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+    <script src="./syncscroll.js"></script>
+    <script src="../../global.js"></script>
+    <link rel="stylesheet" href="../../global.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="background"></div>
+    <div id="body">
+        <div id="header">
+            <div class="button"><p>File</p></div>
+            <div class="button"><p>Help</p></div>
+            <span id="title">Brainf*ck!</span>
+            <div id="spacer"></div>
+        </div>
+        <div id="content">
+            <div id="controls">
+                <div class="button" id="run" onclick="run()">
+                    <div>
+                        <div></div>
+                        <div id="runpause2"></div>
+                        <div id="runpause3"></div>
+                    </div>
+                </div>
+                <div class="button" id="stop" onclick="stop()">
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="spacer"></div>
+                <div class="button" id="step" onclick="step()">
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div id="speedcontrol">
+                    <div><input class="vri" id="speedbar" type="range" min="0" max="20" oninput="settings.speed = speedbar.value;"></div>
+                </div>
+                <div class="button" id="options" onclick="openSettings()">
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="menu">
+                <div id="runlabel">Run</div>
+                <div id="stoplabel">Stop</div>
+                <div class="spacer"></div>
+                <div>Step</div>
+                <div></div>
+                <div id="speedlabel">Delay: .2s</div>
+                <div>Options</div>
+            </div>
+            <div id="editorwrapper" onclick="document.getElementById('memorywrapper').style = 'transform: translateX(calc(100% - 258px))'">
+                <div class="overlay syncscroll" id="editoroverlay" name="editor" spellcheck="false" wrap="off" data-text="Edit code here..."></div>
+                <textarea class="syncscroll" id="editor" name="editor" spellcheck="false" wrap="off" autofocus></textarea>
+            </div>
+            <div id="io">
+                <div id="inputwrapper">
+                    <div class="overlay" id="inputoverlay" spellcheck="false"></div>
+                    <textarea id="input" spellcheck="false" placeholder="Input goes here..."></textarea>
+                </div>
+                <div id="outputwrapper">
+                    <textarea id="output" spellcheck="false" placeholder="...output goes here!" readonly></textarea>
+                </div>
+            </div>
+            <div id="memorywrapper">
+                <div id="memory" data-simplebar>
+                    <div class="cell selected">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                    <div class="cell">0</div>
+                </div>
+                <div id="settingswrapper">
+                    <div id="settings">
+                        <div class="label">
+                            <label for="stylemenu">Theme</label>
+                            <label for="cellstyle">Memory cell style</label>
+                            <label for="indentbar" id="indentbarlabel">Indent size: 2</label>
+                            <label for="superspeed" id="superspeedlabel">SuperSpeed™ mode (x10)</label>
+                            <label for="badassmode" id="badassmodelabel">Bad*ss mode</label>
+                        </div>
+                        <div class="option">
+                            <select name="stylemenu" id="stylemenu" onchange="settings.style = stylemenu.value;">
+                                <option value="ablyss">Ablyss (Default)</option>
+                                <option value="asphalt">Asphalt (Dark Modern)</option>
+                                <option value="kammaroon">Kammaroon</option>
+                                <option value="neored">Neored</option>
+                                <option value="neoneo">Neoneo</option>
+                                <option value="neoblu">Neoblu</option>
+                            </select>
+                            <select name="cellstyle" id="cellstyle" onchange="settings.cellstyle = cellstyle.value;">
+                                <option value="stacked">Stacked</option>
+                                <option value="button">Button</option>
+                            </select>
+                            <input type="range" id="indentbar" name="indentbar" min="0" max="4" oninput="settings.indentsize = indentbar.value">
+                            <div><input type="checkbox" id="superspeed" name="superspeed" onclick="settings.superspeed = superspeed.checked;"></div>
+                            <div><input type="checkbox" id="badassmode" name="badassmode" onclick="badass()"></div>
+                        </div>
+                        
+                    </div>
+                    <div id="credits">
+                        <p>Credits:</p>
+                        <pre>Andrea and Andromeda Zanorith : designing, programing, and debugging the entire IDE</pre>
+                        <pre>SerenaGameDev                 : helping me with all my CSS problems "^^</pre>
+                        <pre>Kamoxy                        : making the "Kamaroon" theme</pre>
+                        <pre>Neo "White Guy" Memelord      : moral? support(?)</pre>
+                        <pre>and YOU!!!                    : for checking it out!</pre>
+                        <p>Inspired by <span class="link" onclick='transition("https:\/\/minond.xyz/brainfuck/", "_blank")'>Marcos Minond's Brainf*ck Interpreter</span>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./code.js"></script>
+<script>
+    window.onpageshow = (() => {
+        editor.value = input.value = output.value = "";
+
+        if (!localStorage.length) {
+            localStorage.setItem('speed', 4);
+            localStorage.setItem('style', "ablyss");
+            localStorage.setItem('cellstyle', "stacked");
+            localStorage.setItem('indentsize', 2)
+        }
+        settings.speed = localStorage.getItem('speed');
+        settings.style = localStorage.getItem('style');
+        settings.cellstyle = localStorage.getItem('cellstyle');
+        settings.indentsize = localStorage.getItem('indentsize')
+        superspeed.checked = false;
+        badassmode.checked = false;
+    });
+
+    function openSettings() {
+        memorywrapper.style.transform == "translateX(0px)" ?
+        document.getElementById('memorywrapper').style = "transform: translateX(calc(100% - 258px));" :
+        document.getElementById('memorywrapper').style = "transform: translateX(0px); animation: 1.5s ease-in 0s 1 openSettings;";
+    }
+</script>
+</html>
