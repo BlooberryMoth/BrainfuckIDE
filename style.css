@@ -200,7 +200,6 @@ input[type="range"]::-moz-range-progress { background-color: var(--button-color)
     animation: 1.5s normal 0s 1 openMenu;
 }
 
-.button#options:hover > div { animation: .7s ease-in-out 0s 1 hamburgerFlip; }
 .button#options > div > div {
     width: 30%;
     border: 3px solid var(--button-color); border-radius: .1rem;
@@ -215,7 +214,8 @@ input[type="range"]::-moz-range-progress { background-color: var(--button-color)
     width: 25%; height: 25%;
     border-radius: 100%;
 }
-.button#options:hover > div > div:nth-child(n+4) { background-color: var(--highlight-color); }
+.button#options:hover > div { animation: .7s ease-in-out 0s 1 hamburgerFlip; }
+.button#options:hover > div > div { background-color: var(--highlight-color); }
 
 #menu {
     position: absolute; top: 0; left: 80px;
