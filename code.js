@@ -408,22 +408,25 @@ settings = {
             jump    = "#DE97DB"; input     = "#FFF95E"; output   = "#91FF8B";
         }
         else if (n === 'neored') {
-            primary = secondary = tertiary = "#000000";
-            border1 = border2   = button   = highlight
-            = text  = comment   = addsub   = move 
-            = jump  = input     = output   = "#FF1818";
+            primary     = secondary = tertiary = "#000000";
+            border1     = border2   = button   = text 
+            = comment   = addsub    = move     = jump 
+            = input     = output    = "#FF1818";
+            highlight   = "#181818";
         }
         else if (n === 'neoneo') {
-            primary = secondary = tertiary = "#000000";
-            border1 = border2   = button   = highlight
-            = text  = comment   = addsub   = move 
-            = jump  = input     = output   = "#18FF18";
+            primary     = secondary = tertiary = "#000000";
+            border1     = border2   = button   = text 
+            = comment   = addsub    = move     = jump 
+            = input     = output    = "#18FF18";
+            highlight   = "#181818";
         }
         else if (n === 'neoblu') {
-            primary = secondary = tertiary = "#000000";
-            border1 = border2   = button   = highlight
-            = text  = comment   = addsub   = move 
-            = jump  = input     = output   = "#3838FF";
+            primary     = secondary = tertiary = "#000000";
+            border1     = border2   = button   = text 
+            = comment   = addsub    = move     = jump 
+            = input     = output    = "#3838FF";
+            highlight   = "#181818";
         }
         document.documentElement.style.setProperty('--primary-color',   primary);
         document.documentElement.style.setProperty('--secondary-color', secondary);
