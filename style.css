@@ -1,6 +1,10 @@
-@import "/global.css";
+@import "/global.css"; /* Global CSS ruleset that applies to all of the pages in my website.
+This includes things like the icon shapes for the buttons! */
 
-@keyframes openMenu {
+
+/* Animation keyframes (obviously) */
+
+@keyframes controlLabelsShow {
     0% { transform: translateX(-100%); }
     66.6% { transform: translateX(-100%); }
     100% { transform: translateX(0); }
@@ -19,7 +23,7 @@
     100%  { transform: translateX(0px);  }
 }
 
-:root {
+:root { /* Color variables! */
     --primary-color:   #242A44;
     --secondary-color: #10131E;
     --tertiary-color:  #212538;
@@ -38,11 +42,15 @@
     --output:  #90EE90;
 }
 
+/* Generic cover-all rules for 'text' and some colors */
 *, p, pre, span, label, .overlay { font-family: 'Roboto Mono', monospace; font-size: 16pt; }
-.button:hover { background-color: var(--highlight-color); }
+.button:hover, .button:hover * { background-color: var(--highlight-color); }
 .simplebar-scrollbar::before { background-color: var(--primary-color); }
 .spacer { flex-grow: 1; }
 
+/* All of this is for the slider inputs.
+I hate that Google and Mozilla haven't just combined the
+features both have for this amazing element... */
 input[type="range"] {
     appearance: none;
     background: transparent;
@@ -76,23 +84,32 @@ input[type="range"]::-moz-range-thumb {
     border: 2px solid var(--button-color); border-radius: 2rem;
     background-color: var(--button-color);
 }
-input[type="range"]::-moz-range-progress { background-color: var(--button-color); }
+input[type="range"]::-moz-range-progress {
+    width: 0.2rem;
+    background-color: var(--button-color);
+}
 .vri::-moz-range-track { width: 0.2rem; }
 .vri::-moz-range-thumb { margin-left: -8px; }
 
-#body { display: flex; flex-direction: column; }
-#background { background-color: var(--primary-color); }
+/* The rules that you probably actually care about :P
+The way I order my CSS rules is weird and unconventional, but it works for me.
+Anything slightly related to each other are seperated by 1 (one) newline.
+Anything that's part of a new section will be seperated by 2 (two) newlines and a comment (hopefully) */
 
-#header {
+#background { background-color: var(--primary-color); }
+#body { display: flex; flex-direction: column; }
+
+
+#header { /* Everything here is *just* for the header bar */
     position: absolute; top: 0; left: 0;
-    width: 100%; height: 52px;
+    width: 100%; height: 36px;
     border-bottom: 4px solid var(--border-color-1);
 
     background-color: var(--tertiary-color);
 
     display: flex; flex-direction: row; justify-content: left;
 }
-#header .button {
+#header .button { /* TODO This will hopefully be changed soon and have full file IO support */
     width: 80px; height: 100%;
 
     display: flex; flex-direction: column; justify-content: center;
@@ -101,9 +118,10 @@ input[type="range"]::-moz-range-progress { background-color: var(--button-color)
     text-align: center;
     color: var(--text-color);
 }
+#header #spacer { width: 160px; height: 100%; }
 #title {
     font-family: 'DM Sans', sans-serif;
-    font-size: 32pt;
+    font-size: 24pt;
     align-self: center;
     text-align: center;
     font-weight: 800;
@@ -111,11 +129,12 @@ input[type="range"]::-moz-range-progress { background-color: var(--button-color)
 
     flex-grow: 1;
 }
-#header #spacer { width: 160px; height: 100%; }
 
+
+/* This contains everything that's not in the header. (a lot) */
 #content {
-    position: absolute; top: 56px; left: 0;
-    width: 100%; height: calc(100% - 56px);
+    position: absolute; top: 40px; left: 0;
+    width: 100%; height: calc(100% - 40px);
 
     flex-grow: 1;
     display: flex; flex-direction: row;
@@ -130,107 +149,66 @@ input[type="range"]::-moz-range-progress { background-color: var(--button-color)
 
     display: flex; flex-direction: column;
 }
-#controls .button {
-    width: 80px; height: 80px;
-
-    display: flex; flex-direction: column; justify-content: center;
-}
-#controls .button > div {
-    position: relative;
-    width: 50%; height: 50%;
-
-    align-self: center;
-    display: flex; flex-direction: row; justify-content: center;
-}
+#controls .button { width: 80px; aspect-ratio: 1/1; }
 #controls .button > div > div {
-    position: absolute;
-    width: 4px; height: 100%;
-    border-radius: 2rem;
-
     background-color: var(--button-color);
-    align-self: center;
 
     transition: transform 0.5s;
 }
+#controls:hover+#controlLabels, #controlLabels:hover {
+    transform: translateX(0);
+    animation: 1.5s normal 0s 1 controlLabelsShow;
+}
 
-#run { z-index: 2; }
-#run > div > div:nth-child(1) { transform: translateX(-300%); }
-#run > div > div:nth-child(2) { transform: translateX(100%) translateY(22.5%) rotateZ(60deg); }
-#run > div > div:nth-child(3) { transform: translateX(100%) translateY(-22.5%) rotateZ(-60deg); }
+/* NOT A NEW SECTION */
+/* All of the rules here are in order that they appear in the HTML file,
+so the range input is a little jarring being right there in the middle... */
 
-#stop {
+#runButton { z-index: 2; } 
+
+#stopButton {
     transform: translateY(-100%);
     opacity: 0;
     transition: transform .25s, opacity .5s;
 }
-#stop > div > div:nth-child(1) { transform: translateX(450%); }
-#stop > div > div:nth-child(2) { transform: translateX(-450%); }
-#stop > div > div:nth-child(3) { transform: translateY(45%) rotateZ(90deg); }
-#stop > div > div:nth-child(4) { transform: translateY(-45%) rotateZ(90deg); }
 
-#step > div > div:nth-child(1) { transform: rotateZ(90deg); }
-#step > div > div:nth-child(2) {
-    height: 50%;
-    transform: translateX(300%) translateY(30%) rotateZ(45deg);
-}
-#step > div > div:nth-child(3) {
-    height: 50%;
-    transform: translateX(300%) translateY(-30%) rotateZ(-45deg);
-}
-
-#speedcontrol {
+#speedControlWrapper {
     width: 80px; height: 160px;
 
     display: flex; flex-direction: column; justify-content: center;
 }
-#speedcontrol > div {
+#speedControlWrapper > div {
     width: 100%; height: 100%;
 
     display: flex; justify-content: center;
 }
-#speedcontrol input {
+#speedControlWrapper input[type="range"] {
     width: 100%; height: 90%;
     align-self: center;
     writing-mode: vertical-lr;
     direction: rtl;
 }
 
-#controls:hover+#menu, #menu:hover {
-    transform: translateX(0);
-    animation: 1.5s normal 0s 1 openMenu;
-}
-
-.button#options > div > div {
-    width: 30%;
-    border: 3px solid var(--button-color); border-radius: .1rem;
+.button#settingsButton > div > div {
+    border-color: var(--button-color);
     background-color: var(--secondary-color);
 }
-.button#options > div > div:nth-child(2) { transform: rotateZ(120deg); }
-.button#options > div > div:nth-child(3) { transform: rotateZ(240deg); }
-.button#options > div > div:nth-child(n+4):nth-child(-n+6) { border: none; border-radius: 0; }
-.button#options > div > div:nth-child(5) { transform: rotateZ(120deg); }
-.button#options > div > div:nth-child(6) { transform: rotateZ(240deg); }
-.button#options > div > div:nth-child(7) { 
-    width: 25%; height: 25%;
-    border-radius: 100%;
-}
-.button#options:hover > div { animation: .7s ease-in-out 0s 1 hamburgerFlip; }
-.button#options:hover > div > div { background-color: var(--highlight-color); }
+.button#settingsButton > div { animation: .7s ease-in-out 0s 1 hamburgerFlip; }
+.button#settingsButton:hover > div > div { background-color: var(--highlight-color); }
 
-#menu {
+#controlLabels {
     position: absolute; top: 0; left: 80px;
     width: 176px; height: 100%;
     z-index: 1;
 
-    background-color: var(--secondary-color);
-    opacity: .5;
+    background-color: #18181818;
 
     transform: translateX(-100%);
     transition: transform .5s;
 
     display: flex; flex-direction: column; justify-content: start;
 }
-#menu div {
+#controlLabels label {
     position: relative;
     width: 100%; height: 80px;
     padding-left: 8px;
@@ -239,14 +217,15 @@ input[type="range"]::-moz-range-progress { background-color: var(--button-color)
 
     display: flex; flex-direction: column; justify-content: center;
 }
-#stoplabel {
+#stopLabel {
     transform: translateY(-100%);
     opacity: 0;
     transition: transform .25s, opacity .5s;
-}
+} /* Even though I've ID'd all of the labels, I only add rules to the stop button (for obvious reasons) */
 
+/* These rules are for the actual IDE part of the IDE :O */
 
-textarea {
+textarea { /* General rules for all of the textareas in the editor / text IO */
     position: absolute;
     min-width: 100%; min-height: 100%;
     border: none; outline: none; border-radius: 2rem;
@@ -260,7 +239,6 @@ textarea {
 
     resize: none;
 }
-textarea#editor { color: transparent; }
 .overlay {
     position: absolute;
     width: 100%; height: 100%;
@@ -273,23 +251,9 @@ textarea#editor { color: transparent; }
 
     white-space: pre;
 }
-.overlay span:not([class]), .overlay span[class=""] {
-    color: var(--comment);
-    opacity: .5;
-    transition: background-color 0.1s;
-}
-/* .overlay span.space { background-color: green; } */
-.overlay span.selected {
-    background-color: var(--comment);
-    transition: background-color 0s;
-}
-.overlay span.addsub { color: var(--addsub); }
-.overlay span.move { color: var(--move); }
-.overlay span.jump { color: var(--jump); }
-.overlay span.input { color: var(--input); }
-.overlay span.output { color: var(--output); }
 
-#editorwrapper {
+/* The way I've made the code editor have colored letters is quite weird... */
+#editorWrapper {
     position: relative;
     width: calc(50% - 90px);
     margin-right: 8px;
@@ -297,31 +261,49 @@ textarea#editor { color: transparent; }
 
     overflow: hidden;
 }
-#editoroverlay:empty:not(:focus):before {
+#editor { color: transparent; }
+#editorOverlay:empty:not(:focus):before {
     content: attr(data-text);
     color: var(--text-color);
     opacity: .5;
 }
+#editorOverlay span:not([class]), .overlay span[class=""] {
+    color: var(--comment);
+    opacity: .5;
+    transition: background-color 0.1s;
+}
+/* .overlay span.space { background-color: green; } */
+#editorOverlay span.selected {
+    background-color: var(--comment);
+    transition: background-color 0s;
+}
+#editorOverlay span.addsub { color: var(--addsub); }
+#editorOverlay span.move   { color: var(--move);   }
+#editorOverlay span.jump   { color: var(--jump);   }
+#editorOverlay span.input  { color: var(--input);  }
+#editorOverlay span.output { color: var(--output); }
 
-#io {
+#io { /* The IO boxes are surprisingly boring */
     margin: 0 256px 0 8px; 
     border-left: 4px solid var(--border-color-2); border-radius: 2rem;
 
     flex-grow: 1;
     display: flex; flex-direction: column;
 }
-#inputwrapper {
+#inputWrapper {
     position: relative;
     border-bottom: 4px solid var(--border-color-2);
 
     flex-grow: 2;
 }
-#outputwrapper {
+#outputWrapper {
     position: relative;
     flex-grow: 4;
 }
 
-#memorywrapper {
+/* The memeory div and settings menu lie beyond here */
+
+#settingsAndMemoryWrapper { /* This took me a surprisingly long time to figure out how to do */
     position: absolute; top: 0; left: 256px;
     width: calc(100% - 258px); height: 100%;
     border-left: 4px solid var(--border-color-2);
@@ -332,6 +314,7 @@ textarea#editor { color: transparent; }
 
     display: flex; flex-direction: row;
 }
+
 #memory {
     min-width: 256px; height: 100%;
     padding: 4px 8px 4px 8px;
@@ -346,9 +329,7 @@ textarea#editor { color: transparent; }
     display: flex; flex-direction: row; flex-wrap: wrap;
     align-content: start;
 }
-.cell {
-    width: 100%; height: 32px;
-    margin: 8px 8px 8px 0px;
+#memory .cell {
     border: 2px solid var(--border-color-1); border-radius: 2rem;
     color: var(--text-color);
     transition: background-color .1s;
@@ -359,13 +340,21 @@ textarea#editor { color: transparent; }
 
     display: flex; flex-direction: row; justify-content: center;
 }
-.cell.selected {
+#memory.stackedStyle .cell {
+    width: 100%; height: 32px;
+    margin: 8px 8px 0px 0px;
+}
+#memory.buttonStyle .cell {
+    width: 40px; height: 32px;
+    margin: 8px 8px 0px 0px;
+}
+#memory .cell.selected {
     background-color: var(--button-color);
     color: black;
     transition: background-color 0s;
 }
 
-#settingswrapper {
+#settingsMenuWrapper { /* Fun Fact™! The design of this menu is actually 100% accidental. */
     width: 100%; height: 100%;
     border-left: 4px solid var(--highlight-color); border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;
     background-color: var(--primary-color);
@@ -374,20 +363,20 @@ textarea#editor { color: transparent; }
 
     display: flex; flex-direction: column;
 }
-#settings {
+#settingsMenu {
     width: 100%; height: 100%;
     padding: 16px;
 
     flex-grow: 1;
     display: flex; flex-direction: row;
 }
-#settings > div > * { margin: 12px; }
-#settings > .label { display: flex; flex-direction: column; justify-content: left; }
-#settings > .option { display: flex; flex-direction: column; }
-.option > div { display: flex; flex-direction: row; justify-content: left; }
-.option input[type="checkbox"] { width: 20px; height: 20px; }
-.option input[type="range"]
-#settings label { color: var(--text-color); }
+#settingsMenu > div > * { margin: 12px; }
+#settingsMenu > .label { display: flex; flex-direction: column; justify-content: left; }
+#settingsMenu > .option { display: flex; flex-direction: column; }
+#settingsMenu.option > div { display: flex; flex-direction: row; justify-content: left; }
+#settingsMenu.option input[type="checkbox"] { width: 20px; height: 20px; }
+/* #settingsMenu.option input[type="range"] {} Left over in case I want to use it */
+#settingsMenu label { color: var(--text-color); }
 
 #credits {
     width: 100%;

@@ -1,19 +1,14 @@
-const editor     = document.getElementById('editor');
-const input      = document.getElementById('input');
-const output     = document.getElementById('output');
-const editOver   = document.getElementById('editoroverlay');
-const inputOver  = document.getElementById('inputoverlay');
-const memory     = document.getElementsByClassName('simplebar-content')[0];
-const speedbar   = document.getElementById('speedbar');
-const cellstyle  = document.getElementById('cellstyle');
-const stylemenu  = document.getElementById('stylemenu');
-const sscheckbox = document.getElementById('superspeed');
-
+/* IDE related HTML elements that JS can't really find on it's own */
+const memoryBank  = $('.simplebar-content')[0];
+const sscheckbox  = $('#superspeed')[0];
+/* regex rules for the IDE editor. */
 const BFre = /\+|-|<|>|\[|\]|,|\./g;
 const BRNB = ["-", "+", "<", ">"];
 
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+/* A beautiful sleep function for JS */
+const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
 
+/* Variables for the interpreter */
 var running    = false;
 var paused     = false;
 var ptr        = 0;
@@ -25,13 +20,12 @@ async function run() {
     if (!running && !paused) reset();
 
     if (!running || paused) {
-        running = true;
-        paused = false;
-        document.getElementById('runpause2').style = "transform: translateX(300%) translateY(0) rotateZ(0deg);";
-        document.getElementById('runpause3').style = "transform: translateX(300%) translateY(0) rotateZ(0deg);";
-        document.getElementById('stop').style      = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
-        document.getElementById('stoplabel').style = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
-        document.getElementById('runlabel').innerHTML = "Pause"
+        running = true; paused = false;
+        
+        runLabel.innerHTML = "Pause";
+        runButton.className = runButton.className.replace('play', "pause");
+        stopLabel.style  = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
+        stopButton.style = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
     }
     else pause();
 
@@ -67,8 +61,8 @@ function execute() {
         char = editor.value[ptr];
     }
 
-    editOver.children[prevPtr].className = editOver.children[prevPtr].className.replace(' selected', "");
-    editOver.children[ptr].className += " selected";
+    editorOverlay.children[prevPtr].className = editorOverlay.children[prevPtr].className.replace(' selected', "");
+    editorOverlay.children[ptr].className += " selected";
     prevPtr = ptr;
 
     if (char === '-') cell.add(-1);
@@ -112,20 +106,28 @@ function execute() {
     ptr++;
 }
 
-editor.addEventListener('keydown', (e) => {
+editor.addEventListener('keydown', e => {
     if (e.key == 'Tab') {
-        e.preventDefault()
+        e.preventDefault();
         let selStt = editor.selectionStart;
         let selEnd = editor.selectionEnd;
         remove(selStt, selEnd);
 
         insert(" ".repeat(settings.indentsize), selStt);
     }
-})
+});
+input.addEventListener('keydown', e => {
+    if (e.key == 'Tab') {
+        e.preventDefault();
+        let selStt = editor.selectionStart;
+        let selEnd = editor.selectionEnd;
+        input.value = input.value.slice(0, selStt) + (" ".repeat(settings.indentsize)) + input.value.slice(selEnd + 1, input.value.length);
+    }
+});
 
 function onEdit(event) {
     event.preventDefault();
-    console.log(event.inputType);
+    /* console.log(event.inputType); */
     reset();
 
     let selStt = editor.selectionStart;
@@ -188,10 +190,10 @@ function onEdit(event) {
     }
 
     try {
-        if (editOver.children[editOver.children.length - 1].innerHTML === '\n') {
+        if (editorOverlay.children[editorOverlay.children.length - 1].innerHTML === '\n') {
             let endCap = document.createElement('span');
             endCap.innerHTML = " ";
-            editOver.insertBefore(endCap, editOver.children[editOver.children.length]);
+            editorOverlay.insertBefore(endCap, editorOverlay.children[editorOverlay.children.length]);
         }
     } catch {}
 
@@ -204,7 +206,7 @@ function onEdit(event) {
 
 function remove(stt, end) {
     editor.value = editor.value.slice(0, Math.max(stt, 0)) + editor.value.slice(end, editor.value.length);
-    for (let i = end - 1; i > stt - 1; i--) { editOver.removeChild(editOver.children[i]); }
+    for (let i = end - 1; i > stt - 1; i--) { editorOverlay.removeChild(editorOverlay.children[i]); }
 
     editor.selectionStart = editor.selectionEnd = stt;
 }
@@ -224,7 +226,7 @@ function insert(text, pos, cursor = 0) {
         if (char === '\n') { span.innerHTML = "&#10;"; }
         else { span.innerHTML = char; }
 
-        editOver.insertBefore(span, editOver.children[pos + i]);
+        editorOverlay.insertBefore(span, editorOverlay.children[pos + i]);
 
     }
     editor.selectionStart = editor.selectionEnd = pos + text.length + cursor;
@@ -243,36 +245,35 @@ function getIndention(pos) {
 
 function pause() {
     paused = true;
-    document.getElementById('stop').style      = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
-    document.getElementById('stoplabel').style = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
-    document.getElementById('runpause2').style = "transform: translateX(100%) translateY(22.5%) rotateZ(60deg);";
-    document.getElementById('runpause3').style = "transform: translateX(100%) translateY(-22.5%) rotateZ(-60deg);";
-    document.getElementById('runlabel').innerHTML = "Run"
+    
+    runLabel.innerHTML = "Run"
+    runButton.className = runButton.className.replace('pause', "play");
+    stopLabel.style  = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
+    stopButton.style = "transform: translateY(0); opacity: 1; transition: transform .25s, opacity .5s;";
 }
 
 function stop() {
     running = paused = false;
 
-    document.getElementById('runpause2').style = "transform: translateX(100%) translateY(22.5%) rotateZ(60deg);";
-    document.getElementById('runpause3').style = "transform: translateX(100%) translateY(-22.5%) rotateZ(-60deg);";
-    document.getElementById('stop').style = "transform: translateY(-100%); opacity: 0; transition: transform .5s, opacity .25s;";
-    document.getElementById('stoplabel').style = "transform: translateY(-100%); opacity: 0; transition: transform .5s, opacity .25s;";
-    document.getElementById('runlabel').innerHTML = "Run"
+    runLabel.innerHTML = "Run"
+    runButton.className = runButton.className.replace('pause', "play");
+    stopLabel.style  = "transform: translateY(-100%); opacity: 0; transition: transform .5s, opacity .25s;";
+    stopButton.style = "transform: translateY(-100%); opacity: 0; transition: transform .5s, opacity .25s;";
 }
 
 function reset() {
     stop();
     ptr = prevPtr = inPtr = prevInPtr = 0;
 
-    for (let i = 0; i < editOver.children.length; i++) editOver.children[i].className = editOver.children[i].className.replace(' selected', "");
-    for (let i = 0; i < memory.children.length; i++) memory.children[i].innerHTML = "0";
+    for (let i = 0; i < editorOverlay.children.length; i++) editorOverlay.children[i].className = editorOverlay.children[i].className.replace(' selected', "");
+    for (let i = 0; i < memoryBank.children.length; i++) memoryBank.children[i].innerHTML = "0";
     cell.select(0);
 
-    inputOver.innerHTML = "";
+    inputOverlay.innerHTML = "";
     for (let i = 0; i < input.value.length; i++) {
         let span = document.createElement('span');
         input.value[i] === '\n' ? span.innerHTML = "&#10;" : span.innerHTML = " ";
-        inputOver.appendChild(span);
+        inputOverlay.appendChild(span);
     }
 
     output.value = "";
@@ -282,18 +283,17 @@ class cell {
     constructor() { this.pos = 0; }
 
     select(pos) {
-        if (pos > memory.children.length - 1) {
+        if (pos > memoryBank.children.length - 1) {
             for (let i = 0; i < 5; i++) {
                 let newCell = document.createElement('div');
                 newCell.className = "cell";
                 newCell.innerHTML = "0";
-                settings.cellstyle === "button" ? newCell.style.width = "40px" : newCell.style.width = "100%";
-                memory.appendChild(newCell);
+                memoryBank.appendChild(newCell);
             }
         }
 
-        memory.children[this.pos].className = memory.children[this.pos].className.replace(' selected', "");
-        try { memory.children[pos].className += " selected"; }
+        memoryBank.children[this.pos].className = memoryBank.children[this.pos].className.replace(' selected', "");
+        try { memoryBank.children[pos].className += " selected"; }
         catch (err) {
             console.log(err);
             if (pos < 0) { output.value = "ERROR\nMemory underflow."; }
@@ -302,27 +302,27 @@ class cell {
         this.pos = pos;   
     }
 
-    get() { return memory.children[this.pos].innerHTML; }
+    get() { return memoryBank.children[this.pos].innerHTML; }
 
     add(i) {
-        let newI = parseInt(memory.children[this.pos].innerHTML) + i;
+        let newI = parseInt(memoryBank.children[this.pos].innerHTML) + i;
         if (newI < 0) newI = 255;
         if (newI > 255) newI = 0;
-        memory.children[this.pos].innerHTML = newI;
+        memoryBank.children[this.pos].innerHTML = newI;
     }
 
     read() {
-        output.value += String.fromCharCode(parseInt(memory.children[this.pos].innerHTML));
+        output.value += String.fromCharCode(parseInt(memoryBank.children[this.pos].innerHTML));
         output.scrollTop = output.scrollHeight;
     }
 
     write() {
-        if (isNaN(input.value.charCodeAt(inPtr))) memory.children[this.pos].innerHTML = 0;
-        else memory.children[this.pos].innerHTML = input.value.charCodeAt(inPtr);
+        if (isNaN(input.value.charCodeAt(inPtr))) memoryBank.children[this.pos].innerHTML = 0;
+        else memoryBank.children[this.pos].innerHTML = input.value.charCodeAt(inPtr) % 255;
 
         try {
-            inputOver.children[prevInPtr].className = inputOver.children[prevInPtr].className.replace(' selected', "");
-            inputOver.children[inPtr].className += " selected";
+            inputOverlay.children[prevInPtr].className = inputOverlay.children[prevInPtr].className.replace(' selected', "");
+            inputOverlay.children[inPtr].className += " selected";
         } catch {}
 
         prevInPtr = inPtr;
@@ -334,59 +334,56 @@ cell = new cell();
 editor.addEventListener('beforeinput', onEdit);
 
 function badass() {
-    this.badassmode = document.getElementById('badassmode').checked;
+    this.badassmode = document.getElementById('BAM').checked;
     if (this.badassmode) {
         document.title = "Brainfuck!";
-        document.getElementById('title').innerHTML = "Brainfuck!";
-        document.getElementById('badassmodelabel').innerHTML = "Badass mode";
-        document.getElementById('credits').children[6].innerHTML = document.getElementById('credits').children[6].innerHTML.replace("Brainf*ck", "Brainfuck");
+        title.innerHTML = "Brainfuck!";
+        BAMLabel.innerHTML = "Badass mode";
+        credits.children[6].innerHTML = credits.children[6].innerHTML.replace("Brainf*ck", "Brainfuck");
     } else {
         document.title = "Brainf*ck!";
-        document.getElementById('title').innerHTML = "Brainf*ck!";
-        document.getElementById('badassmodelabel').innerHTML = "Bad*ss mode";
-        document.getElementById('credits').children[6].innerHTML = document.getElementById('credits').children[6].innerHTML.replace("Brainfuck", "Brainf*ck");
+        title.innerHTML = "Brainf*ck!";
+        BAMLabel.innerHTML = "Bad*ss mode";
+        credits.children[6].innerHTML = credits.children[6].innerHTML.replace("Brainfuck", "Brainf*ck");
     }
 }
 
 settings = {
     _speed: 0.2,
     set speed(i) {
-        speedbar.value = i;
+        speedSlider.value = i;
         this._speed = i / 20; if (this._speed === 0) this._speed += 0.001;
 
-        document.getElementById('speedlabel').innerHTML = `Delay: ${this._speed}s`;
+        document.getElementById('speedLabel').innerHTML = `Delay: ${this._speed}s`;
         localStorage.setItem('speed', i);
     },
     get speed() { return this._speed },
 
-    _cellstyle: "stacked",
-    set cellstyle(n) {
-        this._cellstyle = cellstyle.value = n;
-        if (n === 'stacked') $('.cell').css('width', '100%');
-        else if (n === 'button') $('.cell').css('width', '40px');
+    _cellStyle: "stacked",
+    set cellStyle(n) {
+        this._cellStyle = cellStyle.value = n;
+        if (n === 'stacked') memory.className = memory.className.replace('button', "stacked");
+        else if (n === 'button') memory.className = memory.className.replace('stacked', "button");
 
-        localStorage.setItem('cellstyle', n);
+        localStorage.setItem('cellStyle', n);
     },
-    get cellstyle() { return this._cellstyle; },
+    get cellStyle() { return this._cellStyle; },
 
-    _indentsize: 2,
-    set indentsize(i) {
-        this._indentsize = indentbar.value = i;
-        document.getElementById('indentbarlabel').innerHTML = `Indent size: ${i} space${i === "1" ? "" : "s"}`;
-        localStorage.setItem('indentsize', i)
+    _indentSize: 2,
+    set indentSize(i) {
+        this._indentSize = indentBar.value = i;
+        indentBarLabel.innerHTML = `Indent size: ${i} space${i === "1" ? "" : "s"}`;
+        localStorage.setItem('indentSize', i)
     },
-    get indentsize() { return this._indentsize; },
+    get indentSize() { return this._indentSize; },
 
     _superspeed: false,
-    set superspeed(b) {
-        this._superspeed = b;
-        console.log(b);
-    },
+    set superspeed(b) { this._superspeed = b; },
     get superspeed() { return this._superspeed; },
 
     _style: "ablyss",
     set style(n) {
-        this._style = stylemenu.value = n;
+        this._style = styleMenu.value = n;
         let primary = "#242A44"; let secondary = "#10131E"; let tertiary = "#212538";
         let border1 = "#212538"; let border2   = "#10131E";
         let button  = "#FFFFFF"; let highlight = "#394060"; let text     = "#FFFFFF";
@@ -448,3 +445,9 @@ settings = {
     },
     get style() { return this._style; }
 }
+
+
+/*
+!TODO File handling
+*/
+
