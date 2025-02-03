@@ -45,7 +45,7 @@ This includes things like the icon shapes for the buttons! */
 /* Generic cover-all rules for 'text' and some colors */
 *, p, pre, span, label, .overlay { font-family: 'Roboto Mono', monospace; font-size: 16pt; }
 .button:hover, .button:hover * { background-color: var(--highlight-color); }
-.simplebar-scrollbar::before { background-color: var(--primary-color); }
+.simplebar-scrollbar::before { background-color: var(--border-color-1); }
 .spacer { flex-grow: 1; }
 
 /* All of this is for the slider inputs.
