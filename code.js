@@ -113,7 +113,7 @@ editor.addEventListener('keydown', e => {
         let selEnd = editor.selectionEnd;
         remove(selStt, selEnd);
 
-        insert(" ".repeat(settings.indentsize), selStt);
+        insert(" ".repeat(settings.indentSize), selStt);
     }
 });
 input.addEventListener('keydown', e => {
@@ -121,7 +121,7 @@ input.addEventListener('keydown', e => {
         e.preventDefault();
         let selStt = editor.selectionStart;
         let selEnd = editor.selectionEnd;
-        input.value = input.value.slice(0, selStt) + (" ".repeat(settings.indentsize)) + input.value.slice(selEnd + 1, input.value.length);
+        input.value = input.value.slice(0, selStt) + (" ".repeat(settings.indentSize)) + input.value.slice(selEnd + 1, input.value.length);
     }
 });
 
@@ -151,8 +151,8 @@ function onEdit(event) {
     if (event.inputType === 'insertLineBreak') {
         let indent = getIndention(selStt);
         if (editor.value[selStt - 1] === '[') {
-            if (editor.value[selStt] === ']') insert("\n" + " ".repeat(indent) + " ".repeat(settings.indentsize) + "\n" + " ".repeat(indent), selStt, -1 - indent);
-            else insert("\n" + " ".repeat(indent) + " ".repeat(settings.indentsize), selStt, -indent);
+            if (editor.value[selStt] === ']') insert("\n" + " ".repeat(indent) + " ".repeat(settings.indentSize) + "\n" + " ".repeat(indent), selStt, -1 - indent);
+            else insert("\n" + " ".repeat(indent) + " ".repeat(settings.indentSize), selStt, -indent);
         }
         else insert("\n" + " ".repeat(indent), selStt);
     }
@@ -166,7 +166,7 @@ function onEdit(event) {
                     if (editor.value[i] === ' ') noSpaces++;
                     else { noSpaces = 1; break; }
                 }
-                remove(selStt - Math.min(noSpaces, settings.indentsize), selEnd);
+                remove(selStt - Math.min(noSpaces, settings.indentSize), selEnd);
             }
             else if (editor.value[selStt - 1] === '[' && editor.value[selEnd] === ']') remove(selStt - 1, selEnd + 1);
             else remove(selStt - 1, selEnd);
