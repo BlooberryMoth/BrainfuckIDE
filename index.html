@@ -126,10 +126,10 @@
 
         editor.value = input.value = output.value = "";
 
-        settings.speed = localStorage.getItem('speed')|4;
-        settings.style = localStorage.getItem('style')|"ablyss";
-        settings.cellStyle = localStorage.getItem('cellStyle')|"stacked";
-        settings.indentSize = localStorage.getItem('indentSize')|2;
+        settings.speed = localStorage.getItem('speed')||4;
+        settings.style = localStorage.getItem('style')||"ablyss";
+        settings.cellStyle = localStorage.getItem('cellStyle')||"stacked";
+        settings.indentSize = localStorage.getItem('indentSize')||2;
         superspeed.checked = false;
         BAM.checked = false;
 
