@@ -384,55 +384,70 @@ settings = {
     _style: "ablyss",
     set style(n) {
         this._style = styleMenu.value = n;
-        let primary = "#242A44"; let secondary = "#10131E"; let tertiary = "#212538";
-        let border1 = "#212538"; let border2   = "#10131E";
-        let button  = "#FFFFFF"; let highlight = "#394060"; let text     = "#FFFFFF";
-        let comment = "#FFFFFF"; let addsub    = "#FFD27F"; let move     = "#7F7FFF";
-        let jump    = "#BF7FBF"; let input     = "#FFFF7F"; let output   = "#C7F6CF";
+        let primary = "#242A44"; let secondary = "#10131E"; let tertiary      = "#212538";
+        let border1 = "#212538"; let border2   = "#10131E"; let textHighlight = "#FFFFFF";
+        let button  = "#FFFFFF"; let highlight = "#394060"; let text          = "#FFFFFF";
+        let comment = "#FFFFFF"; let addsub    = "#FFD27F"; let move          = "#7F7FFF";
+        let jump    = "#BF7FBF"; let input     = "#FFFF7F"; let output        = "#C7F6CF";
 
         if (n === 'asphalt') {
-            primary = "#1F1F1F"; secondary = "#181818"; tertiary = "#242424";
-            border1 = "#242424"; border2   = "#181818";
-            button  = "#D7D7D7"; highlight = "#37373D"; text     = "#CCCCCC";
-            comment = "#6A9955"; addsub    = "#4EC9B0"; move     = "#3F9CD6";
-            jump    = "#DA70D6"; input     = "#F1D700"; output   = "#CCCCCC";
+            primary = "#1F1F1F"; secondary = "#181818"; tertiary      = "#242424";
+            border1 = "#242424"; border2   = "#181818"; textHighlight = "#264F78";
+            button  = "#D7D7D7"; highlight = "#37373D"; text          = "#CCCCCC";
+            comment = "#6A9955"; addsub    = "#4EC9B0"; move          = "#3F9CD6";
+            jump    = "#DA70D6"; input     = "#F1D700"; output        = "#CCCCCC";
         }
         else if (n === 'kammaroon') {
-            primary = "#5F4135"; secondary = "#261D1D"; tertiary = "#6C3C2D";
-            border1 = "#6C3C2D"; border2   = "#261D1D";
-            button  = "#F19651"; highlight = "#E06424"; text     = "#E9904F";
-            comment = "#FFFFFF"; addsub    = "#67FFBF"; move     = "#945DFF";
-            jump    = "#DE97DB"; input     = "#FFF95E"; output   = "#91FF8B";
+            primary = "#5F4135"; secondary = "#261D1D"; tertiary      = "#6C3C2D";
+            border1 = "#6C3C2D"; border2   = "#261D1D"; textHighlight = "#FFFFFF";
+            button  = "#F19651"; highlight = "#E06424"; text          = "#E9904F";
+            comment = "#FFFFFF"; addsub    = "#67FFBF"; move          = "#945DFF";
+            jump    = "#DE97DB"; input     = "#FFF95E"; output        = "#91FF8B";
         }
-        else if (n === 'neored') {
-            primary     = secondary = tertiary = "#000000";
-            border1     = border2   = button   = text 
-            = comment   = addsub    = move     = jump 
-            = input     = output    = "#FF1818";
+        else if (n === 'neonred') {
+            primary     = secondary = tertiary      = "#000000";
+            border1     = border2   = button        = text 
+            = comment   = addsub    = move          = jump 
+            = input     = output    = textHighlight = "#FF1818";
             highlight   = "#181818";
         }
-        else if (n === 'neoneo') {
-            primary     = secondary = tertiary = "#000000";
-            border1     = border2   = button   = text 
-            = comment   = addsub    = move     = jump 
-            = input     = output    = "#18FF18";
+        else if (n === 'neongreen') {
+            primary     = secondary = tertiary      = "#000000";
+            border1     = border2   = button        = text 
+            = comment   = addsub    = move          = jump 
+            = input     = output    = textHighlight = "#18FF18";
             highlight   = "#181818";
         }
-        else if (n === 'neoblu') {
-            primary     = secondary = tertiary = "#000000";
-            border1     = border2   = button   = text 
-            = comment   = addsub    = move     = jump 
-            = input     = output    = "#3838FF";
+        else if (n === 'neonblue') {
+            primary     = secondary = tertiary      = "#000000";
+            border1     = border2   = button        = text 
+            = comment   = addsub    = move          = jump 
+            = input     = output    = textHighlight = "#3838FF";
             highlight   = "#181818";
         }
-        document.documentElement.style.setProperty('--primary-color',   primary);
-        document.documentElement.style.setProperty('--secondary-color', secondary);
-        document.documentElement.style.setProperty('--tertiary-color',  tertiary);
-        document.documentElement.style.setProperty('--border-color-1',  border1);
-        document.documentElement.style.setProperty('--border-color-2',  border2);
-        document.documentElement.style.setProperty('--button-color',    button);
-        document.documentElement.style.setProperty('--highlight-color', highlight);
-        document.documentElement.style.setProperty('--text-color',      text);
+        else if (n === 'neonwhite') {
+            primary     = secondary = tertiary      = "#000000";
+            border1     = border2   = button        = text 
+            = comment   = addsub    = move          = jump 
+            = input     = output    = textHighlight = "#FFFFFF";
+            highlight   = "#181818";
+        }
+        else if (n === 'neonblack') {
+            primary     = secondary = tertiary      = "#FFFFFF";
+            border1     = border2   = button        = text 
+            = comment   = addsub    = move          = jump 
+            = input     = output    = textHighlight = "#000000";
+            highlight   = "#E7E7E7";
+        }
+        document.documentElement.style.setProperty('--primary-color',        primary);
+        document.documentElement.style.setProperty('--secondary-color',      secondary);
+        document.documentElement.style.setProperty('--tertiary-color',       tertiary);
+        document.documentElement.style.setProperty('--border-color-1',       border1);
+        document.documentElement.style.setProperty('--border-color-2',       border2);
+        document.documentElement.style.setProperty('--button-color',         button);
+        document.documentElement.style.setProperty('--highlight-color',      highlight);
+        document.documentElement.style.setProperty('--text-color',           text);
+        document.documentElement.style.setProperty('--text-highlight-color', textHighlight);
 
         document.documentElement.style.setProperty('--comment', comment);
         document.documentElement.style.setProperty('--addsub',  addsub);

@@ -24,15 +24,16 @@ This includes things like the icon shapes for the buttons! */
 }
 
 :root { /* Color variables! */
-    --primary-color:   #242A44;
-    --secondary-color: #10131E;
-    --tertiary-color:  #212538;
-    --border-color-1:  #212538;
-    --border-color-2:  #10131E;
-    --border-color-3:  #394060;
-    --button-color:    #FFFFFF;
-    --highlight-color: #394060;
-    --text-color:      #FFFFFF;
+    --primary-color:        #242A44;
+    --secondary-color:      #10131E;
+    --tertiary-color:       #212538;
+    --border-color-1:       #212538;
+    --border-color-2:       #10131E;
+    --border-color-3:       #394060;
+    --button-color:         #FFFFFF;
+    --highlight-color:      #394060;
+    --text-color:           #FFFFFF;
+    --text-highlight-color: #FFFFFF;
 
     --comment: #FFFFFF;
     --addsub:  #FFA500;
@@ -201,7 +202,7 @@ so the range input is a little jarring being right there in the middle... */
     width: 176px; height: 100%;
     z-index: 1;
 
-    background-color: #18181818;
+    background-color: #18181838;
 
     transform: translateX(-100%);
     transition: transform .5s;
@@ -274,7 +275,7 @@ textarea { /* General rules for all of the textareas in the editor / text IO */
 }
 /* .overlay span.space { background-color: green; } */
 #editorOverlay span.selected {
-    background-color: var(--comment);
+    background-color: var(--text-highlight-color);
     transition: background-color 0s;
 }
 #editorOverlay span.addsub { color: var(--addsub); }
@@ -350,7 +351,7 @@ textarea { /* General rules for all of the textareas in the editor / text IO */
 }
 #memory .cell.selected {
     background-color: var(--button-color);
-    color: black;
+    color: var(--highlight-color);
     transition: background-color 0s;
 }
 
@@ -385,3 +386,4 @@ textarea { /* General rules for all of the textareas in the editor / text IO */
 
     display: flex; flex-direction: column; justify-content:  flex-end;
 }
+#credits * { color: var(--text-color); }
